@@ -1,0 +1,6 @@
+State_ID,Total_Trajectories,Normal_Count,Cancer_Count,Normal_Percent,Cancer_Percent,State_Type
+0,127,0,127,0.0%,100.0%,Cancer
+1,69,0,69,0.0%,100.0%,Cancer
+2,36,36,0,100.0%,0.0%,Normal
+3,101,101,0,100.0%,0.0%,Normal
+4,59,59,0,100.0%,0.0%,Normal

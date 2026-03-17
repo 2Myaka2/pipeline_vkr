@@ -1,0 +1,41 @@
+{
+  "algorithms": [
+    "K-means",
+    "Hierarchical",
+    "DBSCAN",
+    "HDBSCAN"
+  ],
+  "n_clusters": [
+    9,
+    9,
+    36,
+    5
+  ],
+  "metrics": [
+    {
+      "\u0410\u043b\u0433\u043e\u0440\u0438\u0442\u043c": "K-means",
+      "Silhouette": "0.687",
+      "Davies-Bouldin": "0.410",
+      "Calinski-Harabasz": "2010.3"
+    },
+    {
+      "\u0410\u043b\u0433\u043e\u0440\u0438\u0442\u043c": "Hierarchical",
+      "Silhouette": "0.666",
+      "Davies-Bouldin": "0.437",
+      "Calinski-Harabasz": "1798.1"
+    },
+    {
+      "\u0410\u043b\u0433\u043e\u0440\u0438\u0442\u043c": "DBSCAN (core \u0442\u043e\u043b\u044c\u043a\u043e)",
+      "Silhouette": "0.759",
+      "Davies-Bouldin": "0.284",
+      "Calinski-Harabasz": "23985.9"
+    },
+    {
+      "\u0410\u043b\u0433\u043e\u0440\u0438\u0442\u043c": "HDBSCAN (core \u0442\u043e\u043b\u044c\u043a\u043e)",
+      "Silhouette": "0.615",
+      "Davies-Bouldin": "0.545",
+      "Calinski-Harabasz": "789.8"
+    }
+  ],
+  "recommendation": "HDBSCAN - \u043b\u0443\u0447\u0448\u0438\u0439, \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c K-Means \u0434\u043b\u044f \u043f\u0443\u0431\u043b\u0438\u043a\u0430\u0446\u0438\u0438"
+}

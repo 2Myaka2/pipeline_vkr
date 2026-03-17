@@ -1,0 +1,30 @@
+{
+  "analysis_info": {
+    "normal_graphs": 490,
+    "cancer_graphs": 490,
+    "n_residues": 689,
+    "n_lipids": 60
+  },
+  "normal": {
+    "mean_contacts": 1.6153846153846154,
+    "std_contacts": 1.5157982387333278,
+    "max_contacts": 7.0,
+    "min_contacts": 0.0,
+    "lipid_coverage": 0.8
+  },
+  "cancer": {
+    "mean_contacts": 1.2859216255442671,
+    "std_contacts": 1.356954585505,
+    "max_contacts": 6.0,
+    "min_contacts": 0.0,
+    "lipid_coverage": 0.6666666666666666
+  },
+  "comparison": {
+    "delta_contacts": -0.3294629898403483,
+    "pct_change": -20.395315316826366,
+    "delta_coverage": -13.333333333333341,
+    "reorganization_score": 0.793350811663334,
+    "pvalue": 0.0,
+    "significant": true
+  }
+}

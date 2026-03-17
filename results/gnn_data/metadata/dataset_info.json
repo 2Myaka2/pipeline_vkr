@@ -1,0 +1,44 @@
+{
+  "dataset_name": "NAPI2B Heterogeneous Graphs",
+  "creation_date": "2025-10-26 09:44:14",
+  "source_notebooks": [
+    "02_MD_Normal_7ns.ipynb",
+    "03_MD_Tumor_7ns.ipynb"
+  ],
+  "preprocessing_notebook": "04_Enhanced_Preprocessing.ipynb",
+  "normal_samples": 50,
+  "cancer_samples": 50,
+  "total_samples": 100,
+  "sample_frames": 50,
+  "trajectory_duration_ps": 7000,
+  "frame_interval_ps": 140.0,
+  "node_feature_dim": 24,
+  "num_residues": 689,
+  "interaction_types": [
+    "hbond",
+    "ionic",
+    "hydrophobic",
+    "aromatic",
+    "disulfide",
+    "vdw",
+    "cation_pi",
+    "salt_bridge"
+  ],
+  "num_interaction_types": 8,
+  "graph_type": "HeteroData (PyTorch Geometric)",
+  "node_type": "residue (amino acid)",
+  "edge_attributes": [
+    "distance (Angstrom)",
+    "energy (kcal/mol)"
+  ],
+  "class_labels": {
+    "0": "normal",
+    "1": "cancer"
+  },
+  "balanced": true,
+  "paths": {
+    "normal_graphs": "/content/drive/MyDrive/NAPI2B-ST-GNN/results/gnn_data/graphs/normal_hetero_graphs.pt",
+    "cancer_graphs": "/content/drive/MyDrive/NAPI2B-ST-GNN/results/gnn_data/graphs/cancer_hetero_graphs.pt",
+    "metadata": "/content/drive/MyDrive/NAPI2B-ST-GNN/results/gnn_data/metadata/dataset_info.json"
+  }
+}

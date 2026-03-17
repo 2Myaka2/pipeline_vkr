@@ -1,0 +1,11 @@
+{
+  "st_gnn": 1.0,
+  "ensemble": 1.0,
+  "best_model": "ST-GNN / Ensemble",
+  "accuracy": 1.0,
+  "dataset": {
+    "total_samples": 59,
+    "normal": 31,
+    "cancer": 28
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "Model": "LightSTGNN",
+  "Parameters": 362,
+  "Train_Accuracy": 1.0,
+  "Val_Accuracy": 1.0,
+  "Test_Accuracy": 1.0,
+  "Epochs": 30,
+  "Dataset_Size": 333,
+  "Train_Samples": 274,
+  "Val_Samples": 59,
+  "Normal_Count": 168,
+  "Cancer_Count": 165
+}
