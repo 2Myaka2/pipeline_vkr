@@ -1,0 +1,196 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints
+.jupyter/
+jupyter_notebook_config.py
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+env.bak/
+venv.bak/
+conda-env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Molecular Dynamics - Large files (GROMACS)
+*.xtc                   # Trajectory files (~100-500 MB)
+*.trr                   # Full precision trajectories
+*.dcd                   # NAMD trajectories
+*.nc                    # NETCDF trajectories
+*.h5                    # HDF5 trajectory files
+*.gro                   # GROMACS structure files (keep pdb instead)
+*.tpr                   # GROMACS binary topology (keep for reference if <10MB)
+*.cpt                   # GROMACS checkpoint files
+*.edr                   # GROMACS energy files (large)
+*.log                   # GROMACS log files (usually <1MB, can keep)
+*.mdp                   # GROMACS parameter files (keep - small)
+*.itp                   # GROMACS include topology (keep - small)
+*.top                   # GROMACS topology (keep - small)
+/results/md_trajectories
+data/charmm-gui_output/
+
+# Backup GROMACS files
+*_prev.cpt
+*_backup.*
+*.bak
+
+# NAMD/AMBER outputs
+*.rst
+*.rst7
+*.nc.*
+*.dcd.*
+
+# Analysis outputs (can be regenerated)
+analysis_output/
+temp_analysis/
+*_analysis_temp/
+results/gnn_data/graphs/
+
+# Archive directory (old/backup data)
+archive/
+old_results/
+backup_data/
+deprecated/
+
+# Large result files (keep summary JSON/CSV, archive rest)
+results/md_trajectories/normal/*.xtc
+results/md_trajectories/normal/*.dcd
+results/md_trajectories/cancer/*.xtc
+results/md_trajectories/cancer/*.dcd
+
+# Generated files (regenerate when needed)
+results/plots_temp/
+results/figures_temp/
+tmp/
+.tmp/
+temp/
+
+# Model files (track using Git LFS if needed)
+*.pt                    # PyTorch models (~100-500 MB)
+*.pkl                   # Pickle files for models
+*.joblib                # Joblib model files
+*.h5                    # HDF5 model files
+models_backup/
+*.model
+
+# Data files
+*.pickle
+*.pth
+*.npy
+*.npz
+
+# Logs
+logs/
+*.log
+run_logs/
+
+# Statistics and reports (keep important ones, archive rest)
+stats_old/
+reports_backup/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.lnk
+
+# Package manager
+poetry.lock
+Pipfile.lock
+
+# Miscellaneous
+.cache/
+*.cache
+*~
+*.swp
+.~*
+
+# Documentation builds
+site/
+docs/_build/
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# GitHub Actions
+.github/workflows/*.log
+
+# Excluded by policy
+private/
+confidential/
+secrets/
+credentials/
+
+# Large compressed files (keep if < 10MB, else archive)
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Compiled extensions
+*.so
+*.dll
+*.dylib
+
+# IMPORTANT: Files to KEEP tracked
+# Uncomment to explicitly track:
+# !/archive/.gitkeep
+# !/results/md_trajectories/normal/.gitkeep
+# !/results/md_trajectories/cancer/.gitkeep
+
+# Repository size management
+# Trajectory files should be archived separately
+# Large models should use Git LFS
+# Generated analysis files should be in .gitignore

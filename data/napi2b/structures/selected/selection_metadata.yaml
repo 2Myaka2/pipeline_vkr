@@ -1,0 +1,46 @@
+all_methods_considered:
+- alphafold3_server
+- alphafold_database
+- rosettafold
+- i_tasser
+selected_method_info: &id002
+  name: AlphaFold3 Server
+  preferred_for:
+  - high_accuracy_requirements
+  - latest_predictions
+  reliability_score: 95
+  strengths: &id001
+  - latest_model
+  - conformational_sampling
+  - high_accuracy
+  typical_accuracy: very_high
+selected_structure: alphafold3_server
+selection_date: '2025-09-19T12:47:07.235939'
+selection_rationale:
+  comparison_summary:
+    competitive_field: true
+    decisive_victory: false
+    margin_over_second_best: 2.72
+    second_best_structure: alphafold_database
+  confidence_assessment:
+    confidence_level: low
+    coverage_support: 0.0
+    primary_confidence_score: 70.21825202486345
+    recommendation_confidence: low
+  key_strengths:
+  - 'structural_quality: 100.0%'
+  - 'completeness: 100.0%'
+  - 'method_reliability: 95.0%'
+  method_advantages: *id001
+  method_specific_comments:
+  - Latest and most accurate AlphaFold model
+  - Optimal for high-precision research
+  potential_concerns:
+  - 'sequence_coverage: 0.0%'
+  - 'sequence_identity: 0.0%'
+  - 'clash_penalty: 0.0%'
+  selected_method_info: *id002
+  selected_structure: alphafold3_server
+  total_score: 57.05
+source_file: data\raw\structures\alphafold3_server\napi2b_af3_server.pdb
+total_score: 57.05
