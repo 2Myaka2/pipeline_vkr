@@ -2,7 +2,8 @@
 
 ## Project scope
 Implement only the mandatory assignment items 1–6 for the MD analysis pipeline.
-Do not work on optional extensions / section 9 unless explicitly requested.
+
+Do not work on optional extensions or section 9 unless explicitly requested.
 
 ## Source priority
 Use sources in this order:
@@ -14,28 +15,42 @@ If README.md conflicts with the assignment, follow the assignment and document t
 
 ## Working style
 This is a research repository with many intermediate artifacts.
+
 Prefer reconstructing working logic from notebooks and existing scripts instead of inventing a brand-new design.
+
 Use README.md as an operational reference, not as a source that overrides the formal assignment.
-Before major edits, first inspect the assignment, README.md, relevant notebooks, and existing scripts, then produce a short implementation plan.
+
+Before major code edits, first produce:
+- a short audit summary;
+- a minimal implementation plan;
+- a list of files likely to be changed.
 
 ## Data and Git rules
 Do not commit heavy data, trajectories, generated plots, or bulky results.
+
 A large `results` directory may exist outside the repository, in the same parent directory as the repo.
+
 Support explicit paths and avoid hardcoded local absolute paths.
+
+Do not reorganize or move heavy local data unless it is required for the pipeline to run.
 
 ## Code rules
 Keep changes minimally invasive.
+
 Prefer modular, readable, reproducible code.
-Do not restructure the whole repository unless it is necessary to satisfy assignment items 1–6.
-Do not rewrite unrelated ML/topology/reporting parts of the project.
-Preserve assignment-defined CLI, output filenames, and CSV column names unless the assignment explicitly allows otherwise.
+
+Do not rewrite unrelated ML, topology, or reporting parts of the project.
+
 Document scientific or methodological assumptions explicitly, especially for residue-wise contribution to Rg.
-Do not silently mix units; document any unit conversions explicitly.
 
 ## Validation
 Before finishing, run a smoke test or validation run on available data.
+
 If full validation is too heavy, do a partial check and say exactly what was verified.
+
 Never invent results.
+
+Always report the exact command(s) used for validation.
 
 ## Final report
 Before completion, report:
