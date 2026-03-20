@@ -70,7 +70,7 @@ The pipeline writes:
 - **Residue-wise Rg contribution**: approximation
   \(\sqrt{\langle (m_i/M) \|r_i-r_{COM}\|^2 \rangle_t}\), output in **nm**.
   This is documented explicitly because notebooks do not define a strict canonical residue-wise formula.
-- **SASA**: Shrake-Rupley is computed for the full structure (all atoms in the loaded universe) and then per-region SASA is obtained by summing SASA values of atoms that belong to each region selection; output in **nm²**.
+- **SASA**: computed with mdakit-sasa by running a separate selected analysis for each configured region; region SASA is not derived from full-structure atomwise aggregation; output in **nm²**.
 
 The code converts from MDAnalysis default Å / Å² to nm / nm² explicitly.
 

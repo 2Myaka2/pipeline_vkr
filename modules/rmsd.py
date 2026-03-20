@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
-from MDAnalysis.analysis import align
+from MDAnalysis.transformations.fit import fit_rot_trans
 
 from modules.config import Region
 
@@ -10,13 +10,14 @@ ANGSTROM_TO_NM = 0.1
 
 
 def align_trajectory_global_ca(universe) -> None:
+    universe.trajectory[0]
     reference = universe.copy()
-    align.AlignTraj(
-        universe,
-        reference,
-        select="protein and name CA",
-        in_memory=True,
-    ).run()
+    reference.trajectory[0]
+    mobile_ca = universe.select_atoms("protein and name CA")
+    reference_ca = reference.select_atoms("protein and name CA")
+    transform = fit_rot_trans(mobile_ca, reference_ca)
+    universe.trajectory.add_transformations(transform)
+    universe.trajectory[0]
 
 
 def compute_rmsd_nm(universe, regions: list[Region]) -> tuple[np.ndarray, dict[str, np.ndarray]]:
