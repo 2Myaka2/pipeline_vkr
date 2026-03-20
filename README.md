@@ -1,234 +1,90 @@
-# NAPI2B Structural Bioinformatics Project
+# NAPI2B MD Analysis Pipeline (Mandatory items 1–6)
 
-## 📖 Описание проекта
+This repository now includes a minimal, assignment-aligned MD analysis CLI pipeline focused only on mandatory MD metrics (RMSD, RMSF, Rg, residue-wise Rg contribution, SASA) using MDAnalysis.
 
-Комплексное исследование структуры и динамики транспортера NAPI2B (Sodium-coupled phosphate co-transporter 2B) с использованием:
+> Scope note: this pipeline intentionally does **not** implement optional extensions, section 9, or broader ML/topology workflows.
 
-- **Молекулярная динамика (MD)**: 7 нс симуляций в GROMACS
-- **Машинное обучение**: ST-GNN, Random Forest, XGBoost классификаторы
-- **Топологический анализ**: Сетевые метрики и граф-анализ
-- **Структурная биоинформатика**: SASA анализ, вторичная структура
+## WSL/Linux setup
 
-### Научная актуальность
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-NAPI2B играет ключевую роль в гомеостазе фосфата. Нарушения функции этого переносчика связаны с:
-- Онкологическими процессами
-- Метаболическими нарушениями
-- Почечной патологией
+## Inputs
 
-Настоящее исследование сравнивает нормальный и опухолевый варианты белка для выявления конформационных и функциональных различий.
+Required inputs are explicit file paths:
+- `--tpr`: topology file (`.tpr`)
+- `--xtc`: trajectory file (`.xtc`)
+- `--config`: YAML with top-level `regions` list; each region has:
+  - `name`
+  - `selection` (MDAnalysis selection syntax)
+- `--output`: output directory
 
----
+Example `regions.yaml` (see `regions.example.yaml`):
 
-## 📁 Структура проекта
+```yaml
+regions:
+  - name: full_protein
+    selection: "protein"
+  - name: extracellular_domain
+    selection: "protein and resid 233-360"
+  - name: epitope_323_337
+    selection: "protein and resid 323-337"
+```
 
-\`\`\`
-NAPI2B-ST-GNN/
-├── notebooks/
-│   ├── 01_Setup_Environment.ipynb          # Инициализация окружения
-│   ├── 02_MD_Normal_7ns.ipynb              # MD симуляция - нормальный вариант
-│   ├── 03_MD_Tumor_7ns.ipynb               # MD симуляция - опухолевый вариант
-│   ├── 04_Enhanced_Preprocessing.ipynb     # Предварительная обработка траекторий
-│   ├── 05_Conformational_State_Analysis.ipynb # Машинное обучение + классификация
-│   ├── 06_topological_graph_analysis.ipynb # Топологический анализ сетей
-│   ├── 07_Final_Project_Reports.ipynb       # Интеграция результатов
-│
-├── data/
-│   ├── charmm-gui_output
-│   │    ├── normal/
-│   │    └── cancer
-│   └── napi2b
-│       │   ├── pdb_structures/
-│       ├── normal/
-│       │   └── cancer/
-│       └── sequences/
-│
-├── results/
-│   ├── md_trajectories/
-│   │   ├── normal/
-│   │   │   ├── prod.xtc
-│   │   │   ├── prod.gro
-│   │   │   └── analysis/
-│   │   └── cancer/
-│   ├── md_analysis/
-│   │   ├── rmsd_*.csv
-│   │   ├── rmsf_*.csv
-│   │   └── rg_*.csv
-│   ├── models_v4/
-│   │   ├── st_gnn_model.pt
-│   │   ├── rf_model.pkl
-│   │   └── xgboost_model.pkl
-│   ├── topology_analysis/
-│   │   └── topology_results.json
-│   └── final_reports/
-│       ├── Final_Report.pdf
-│       ├── Interactive_Report.html
-│       └── README.md
-│
-├── src/
-│   ├── md_analysis.py
-│   ├── ml_models.py
-│   └── graph_analysis.py
-│
-├── README.md                    # Этот файл
-├── requirements.txt             # Зависимости Python
-├── environment.yml              # Conda окружение
-├── .gitignore                   # Git исключения
-└── LICENSE
+## Run command (assignment contract)
 
-\`\`\`
+```bash
+python run_pipeline.py --tpr <file.tpr> --xtc <file.xtc> --config <regions.yaml> --output <dir>
+```
 
----
+Concrete example:
 
-## 🧪 Методология
+```bash
+python run_pipeline.py \
+  --tpr ../results/md_trajectories/normal/prod.tpr \
+  --xtc ../results/md_trajectories/normal/prod.xtc \
+  --config regions.example.yaml \
+  --output out_md
+```
 
-### 1. Молекулярная динамика
+## Outputs
 
-**Параметры симуляции:**
-- Force field: AMBER ff99SB-ildn
-- Растворитель: TIP3P вода
-- Температура: 310 K (37°C)
-- Давление: 1 бар
-- Время симуляции: 7 нс
-- Time step: 2 фс
-- Сохранение кадров: каждые 5000 шагов (10 пс)
+The pipeline writes:
 
-**Анализируемые параметры:**
-- RMSD (Root Mean Square Deviation) - стабильность структуры
-- RMSF (Root Mean Square Fluctuation) - локальная подвижность
-- Radius of Gyration (Rg) - компактность структуры
+- `rmsd.csv` with columns: `time_ps`, one column per region
+- `rmsf_<region>.csv` with columns: `resid,rmsf_nm`
+- `rg_time.csv` with columns: `time_ps`, one column per region
+- `rg_residues_<region>.csv` with columns: `resid,rg_contribution_nm`
+- `sasa_<region>.csv` with columns: `time_ps,sasa_nm2`
+- `plots/*.png`
 
-### 2. Классификация конформационных состояний
+## Metric definitions and units
 
-**Алгоритмы:**
-1. **ST-GNN (Spatio-Temporal Graph Neural Network)**
-   - Учитывает топологию белка
-   - Обучается на эмбеддингах конформаций
-   - Лучшая производительность на граф-данных
+- **RMSD**: computed after global trajectory alignment on `protein and name CA`; output in **nm**.
+- **RMSF**: computed on **C-alpha atoms** only; output in **nm**.
+- **Rg time series**: standard radius of gyration per region; output in **nm**.
+- **Residue-wise Rg contribution**: approximation
+  \(\sqrt{\langle (m_i/M) \|r_i-r_{COM}\|^2 \rangle_t}\), output in **nm**.
+  This is documented explicitly because notebooks do not define a strict canonical residue-wise formula.
+- **SASA**: Shrake-Rupley is computed for the full structure (all atoms in the loaded universe) and then per-region SASA is obtained by summing SASA values of atoms that belong to each region selection; output in **nm²**.
 
-2. **Random Forest**
-   - 100 деревьев решений
-   - Хорошая интерпретируемость
-   - Устойчивость к переобучению
+The code converts from MDAnalysis default Å / Å² to nm / nm² explicitly.
 
-3. **XGBoost**
-   - Gradient boosting
-   - Обработка нелинейных зависимостей
-   - Высокая точность
 
-4. **Ensemble**
-   - Мягкое голосование (soft voting)
-   - Комбинация лучших моделей
-   - Обычно лучший результат
+## Validation status
 
-### 3. Топологический анализ
+- CLI parser smoke check (`python run_pipeline.py --help`) is implemented to work without importing MDAnalysis before argument parsing.
+- If runtime dependencies or trajectory files are unavailable in the execution environment, full end-to-end validation on real `.tpr/.xtc` inputs remains **pending** and must be run in a properly provisioned environment.
 
-**Метрики центральности:**
-- Degree centrality - число прямых связей
-- Betweenness centrality - роль в путях между узлами
-- Closeness centrality - близость ко всем узлам
-- Eigenvector centrality - связь с важными узлами
+## External results directory handling
 
-**Структурный анализ:**
-- Hub-анализ (выявление центральных узлов)
-- Community detection (модули в сети)
-- Modularity - степень организации в сообщества
+In this research repository, large trajectory/results data can exist outside Git in a sibling folder (for example `../results`).
+Use explicit `--tpr` and `--xtc` paths; do not hardcode absolute local paths in scripts.
 
----
+## Legacy project materials
 
-## 🚀 Быстрый старт
-
-### Требования
-
-- Python 3.8+
-- GROMACS 2021+ (для MD симуляций)
-- GPU (NVIDIA CUDA 11.0+) - рекомендуется
-
-### Установка
-
-Клонирование репозитория
-git clone https://github.com/RamiliaV/napi2b_stgnn_project.git
-cd NAPI2B-ST-GNN
-
-### Запуск ноутбуков
-
-С помощью Google Colab
-
-Рекомендуемый порядок выполнения:
-1. 01_Setup_Environment.ipynb
-2. 02_MD_Normal_7ns.ipynb (7+ часов на GPU)
-3. 03_MD_Tumor_7ns.ipynb (7+ часов на GPU)
-4. 04_Enhanced_Preprocessing.ipynb
-5. 05_Conformational_State_Analysis.ipynb
-6. 06_Topological_Graph_Analysis.ipynb
-7. 07_Final_Project_Report.ipynb
-
----
-
-## 📊 Основные результаты
-
-### MD анализ
-- Полный белок: RMSD стабилизируется ~1.5 Å после 2 нс
-- ВКД (233-360): Повышенная подвижность в опухолевом варианте
-- Эпитоп (323-337): Максимум гибкости, важен для взаимодействий
-
-### Классификация
-- ST-GNN: Accuracy 94%, F1-score 0.92
-- Random Forest: Accuracy 89%, F1-score 0.87
-- XGBoost: Accuracy 91%, F1-score 0.89
-- Ensemble: Accuracy 95%, F1-score 0.93
-
-### Топология
-- Выявлены 5 hub-узлов в нормальном варианте
-- 7 hub-узлов в опухолевом варианте
-- Модулярность: normal=0.42, cancer=0.38
-
----
-
-## 📚 Используемые библиотеки
-
-### Анализ MD
-- [MDAnalysis](https://www.mdanalysis.org/) - анализ молекулярной динамики
-- [GROMACS](https://www.gromacs.org/) - MD симуляции
-
-### Машинное обучение
-- [PyTorch](https://pytorch.org/) - глубокое обучение
-- [PyTorch Geometric](https://pytorch-geometric.readthedocs.io/) - граф-нейронные сети
-- [scikit-learn](https://scikit-learn.org/) - классические ML алгоритмы
-- [XGBoost](https://xgboost.readthedocs.io/) - gradient boosting
-
-### Визуализация
-- [Matplotlib](https://matplotlib.org/) - статические графики
-- [Plotly](https://plotly.com/) - интерактивные визуализации
-- [NGLView](http://nglviewer.org/) - 3D визуализация структур
-
-### Утилиты
-- [Pandas](https://pandas.pydata.org/) - обработка данных
-- [NumPy](https://numpy.org/) - численные вычисления
-- [SciPy](https://www.scipy.org/) - научные вычисления
-
----
-
-## 📄 Лицензия
-
-MIT License - см. файл LICENSE
-
----
-
-## 👤 Контакты
-
-**Проект:** PhD in Structural Bioinformatics
-**Тема:** Структурная биоинформатика и машинное обучение на белках
-
----
-
-## 🔗 Полезные ссылки
-
-- [MDAnalysis документация](https://docs.mdanalysis.org/)
-- [GROMACS руководство](https://manual.gromacs.org/)
-- [PyTorch Geometric примеры](https://pytorch-geometric.readthedocs.io/en/latest/notes/examples.html)
-- [Plotly документация](https://plotly.com/python/)
-
----
-
-**Последнее обновление:** 31.10.2025
+The repository also contains notebooks and historical outputs for ML/topology/reporting experiments. They are retained as reference artifacts and are not required to run this mandatory MD pipeline.

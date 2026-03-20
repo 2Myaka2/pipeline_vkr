@@ -1,0 +1,7 @@
+regions:
+  - name: full_protein
+    selection: "protein"
+  - name: extracellular_domain
+    selection: "protein and resid 233-360"
+  - name: epitope_323_337
+    selection: "protein and resid 323-337"
